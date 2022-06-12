@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <Version>1.0.0</Version>
+    <Authors>archie1602</Authors>
+    <RepositoryUrl>https://github.com/archie1602/polyfactor</RepositoryUrl>
+    <RepositoryType>public</RepositoryType>
+    <PackageId>polyfactor</PackageId>
+    <Description>Enables to factor polynomials over various mathematical fields.</Description>
+    <Copyright>Made by archie1602</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>polynomial, factorization, factor, polynomial factorization, fields, mathematical fields, algebra</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>This is the first release.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+	<Nullable>disable</Nullable>
+	<ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+	
+  <ItemGroup>
+	<None Include="extension.dib" Pack="true" PackagePath="interactive-extensions/dotnet" />
+	<None Include="README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+	
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

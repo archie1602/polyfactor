@@ -1,0 +1,70 @@
+﻿#!csharp
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+using Microsoft.DotNet.Interactive;
+using Microsoft.DotNet.Interactive.Formatting;
+
+using polyfactor;
+using polyfactor.GaloisStructs;
+
+string Renderer(string l) => $@"
+    <script src='https://polyfill.io/v3/polyfill.min.js?features=es6'></script>
+    <script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
+    \[{l}\]";
+
+public string FactorsToLatex((ulong, List<(GFPoly, int)>) fl)
+{
+    var lc = fl.Item1;
+    var factors = fl.Item2;
+
+    if (lc == 0UL)
+        return "0";
+
+    if (factors.Count == 1 && factors[0].Item1.IsOne)
+        return lc.ToString();
+
+    var latex = new StringBuilder(lc == 1UL ? string.Empty : lc.ToString());
+
+    for (int i = 0; i < factors.Count; ++i)
+    {
+        var currFactor = factors[i];
+
+        var currPol = currFactor.Item1;
+        var currExponent = currFactor.Item2;
+        var isMonom = currPol.IsMonomial;
+
+        if (!isMonom && currPol.Deg > 0)
+            latex.Append(@"\left(");
+
+        latex.Append(currPol.ToLatex());
+
+        if (!isMonom && currPol.Deg > 0)
+            latex.Append(@"\right)");
+
+        if (currExponent != 1)
+            latex.Append("^{" + currExponent.ToString() + "}");
+    }
+
+    return latex.ToString();
+}
+
+// register GF type
+Formatter.Register<GF>(gf => Renderer(gf.ToLatex()), "text/html");
+
+// register GFPoly type
+Formatter.Register<GFPoly>(p => Renderer(p.ToLatex()), "text/html");
+
+// register type for polynomial factorization result
+Formatter.Register<(ulong, List<(GFPoly, int)>)>(fl => Renderer(FactorsToLatex(fl)), "text/html");
+
+string message = "LaTeX renderer is enabled. Enjoy!";
+
+// KernelInvocationContext.Current.Display(message, "text/markdown");
+
+// var context = KernelInvocationContext.Current;
+
+// DisplayExtensions.Display(context, message, "text/markdown");
