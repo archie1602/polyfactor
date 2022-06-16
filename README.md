@@ -1,7 +1,7 @@
 
 <p align="center">
   <a href="https://github.com/archie1602/polyfactor">
-    <img src="logo/logo_new.png" alt="polyfactor logo">
+    <img src="logo/logo_new_new.png" alt="polyfactor logo">
   </a>
 </p>
 
